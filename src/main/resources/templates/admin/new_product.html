@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Товары</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link href='https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="/css/sidebar.css">
+</head>
+<body id="body-pd">
+
+<div class="l-navbar admin-nav" id="nav-bar">
+    <nav class="nav">
+        <div>
+            <a href="/" class="nav_logo">
+                <i class='bx bx-layer nav_logo-icon'></i>
+            </a>
+            <div class="nav_list">
+                <a href="/admin" class="nav_link"> <i class='bx bxs-store nav_icon'></i>  </a>
+                <a href="/admin/users" class="nav_link"> <i class='bx bx-cart nav_icon'></i>  </a>
+                <a href="/admin/orders" class="nav_link"> <i class='bx bx-package nav_icon' ></i> </a>
+            </div>
+        </div>
+        <a href="/logout" class="nav_link">
+            <i class='bx bx-log-out nav_icon'></i>
+        </a>
+    </nav>
+</div>
+
+<div class="">
+    <form class="form card col-6 offset-3" th:method="POST" th:action="@{/admin/new_product}" th:object="${product}" enctype="multipart/form-data">
+        <h3 class="card-header p-3">
+            Добавление нового товара
+        </h3>
+        <div class="card-body">
+            <div class="form-group m-2">
+                <label for="title">Введите наименование товара: </label>
+                <input type="text" class="form-control" placeholder="Наименование" id="title" th:field="*{title}" required>
+                <div class="text-danger" th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></div>
+            </div>
+            <div class="form-group m-2">
+                <label for="description">Введите описание товара: </label>
+                <textarea class="form-control" id="description" required th:field="*{description}"></textarea>
+                <div class="text-danger" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></div>
+            </div>
+            <div class="form-group m-2">
+                <label for="price">Введите цену товара: </label>
+                <input type="number" class="form-control" th:field="*{price}" min="1" step="0.00" placeholder="Цена" id="price" required>
+                <div class="text-danger" th:if="${#fields.hasErrors('price')}" th:errors="*{price}"></div>
+            </div>
+            <div class="form-group m-2">
+                <label for="category">Категория:</label>
+                <select id="category" th:field="*{category}"  name="category">
+                    <div th:each="element : ${category}">
+                        <option th:text="${element.getName()}" th:value="${element.getId()}">
+                    </div>
+                    <option value="0">Новая</option>
+                </select>
+                <div id="new-category" style="display: none;" class="mt-2 mb-2">
+                    <label for="category_new">Название новой категории:</label>
+                    <input type="text" name="category_new" id="category_new">
+                </div>
+                <div class="text-danger" th:if="${#fields.hasErrors('category')}" th:errors="*{category}"></div>
+            </div>
+
+            <div class="form-group m-2">
+                <label for="seller">Введите данные о продавце: </label>
+                <input class="form-control" th:field="*{seller}" placeholder="Продавец" id="seller" required>
+                <div class="text-danger" th:if="${#fields.hasErrors('seller')}" th:errors="*{seller}"></div>
+            </div>
+            <div class="form-group m-2">
+                <div class="text-secondary">Вы можете добавить до 10 фотографий!</div>
+                <input type="file" class="form-control-file" name="files" multiple max="10" accept="image/*">
+                <p class="text-danger" th:if="${#fields.hasErrors('images')}" th:errors="*{images}"></p>
+            </div>
+        </div>
+
+        <div class="card-footer">
+            <input class="btn btn-success" type="submit" value="Добавить">
+            <a href="/admin" class="btn btn-secondary">Назад</a>
+        </div>
+    </form>
+</div>
+
+<script>
+        const categorySelect = document.getElementById('category');
+        const newCategoryDiv = document.getElementById('new-category');
+        const newCategoryInput = document.getElementById('category_new');
+
+        categorySelect.addEventListener('change', (event) => {
+          if (event.target.value === '0') {
+            newCategoryDiv.style.display = 'block';
+            newCategoryInput.required = true;
+          } else {
+            newCategoryDiv.style.display = 'none';
+            newCategoryInput.required = false;
+          }
+        });
+      </script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+</body>
+</html>

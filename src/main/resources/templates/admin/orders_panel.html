@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Users</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link href='https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="/css/sidebar.css">
+</head>
+<body id="body-pd">
+
+<div class="l-navbar admin-nav" id="nav-bar">
+    <nav class="nav">
+        <div>
+            <a href="/" class="nav_logo">
+                <i class='bx bx-layer nav_logo-icon'></i>
+            </a>
+            <div class="nav_list">
+                <a href="/admin" class="nav_link"> <i class='bx bxs-store nav_icon'></i>  </a>
+                <a href="/admin/users" class="nav_link"> <i class='bx bxs-user-detail nav_icon' ></i>  </a>
+                <a href="/admin/orders" class="nav_link active"> <i class='bx bx-package nav_icon' ></i> </a>
+            </div>
+        </div>
+        <a href="/logout" class="nav_link">
+            <i class='bx bx-log-out nav_icon'></i>
+        </a>
+    </nav>
+</div>
+
+<div class="bg-light">
+    <h4>Пользователи</h4>
+
+    <div class="card">
+        <div class="card-body">
+            <table class="table table-striped table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Имя пользователя</th>
+                        <th>Товар</th>
+                        <th>Дата заказа</th>
+                        <th>Статус</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="order : ${orders}">
+                        <form th:action="@{/admin/change_order_status}" method="post">
+                            <input type="hidden" name="id" th:value="${order.getId()}" />
+                            <td th:text="${order.getId()}"></td>
+                            <td th:text="${order.getUser().getUsername()}"></td>
+                            <td th:text="${order.getProduct().getTitle()}"></td>
+                            <td th:text="${#temporals.format(order.getDateTime(), 'dd-MMM-yyyy')}"></td>
+                            <td>
+                                <input type="text" th:value="${order.getStatus()}" name="status">
+                            </td>
+                            <td><button class="btn btn-primary" type="submit">Изменить</button></td>
+                        </form>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+</body>
+</html>

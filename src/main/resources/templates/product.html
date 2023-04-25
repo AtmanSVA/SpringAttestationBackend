@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Товары</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link href='https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="/css/sidebar.css">
+</head>
+<body id="body-pd">
+
+<div class="l-navbar" id="nav-bar">
+    <nav class="nav">
+        <div>
+            <a href="/" class="nav_logo">
+                <i class='bx bx-layer nav_logo-icon'></i>
+            </a>
+            <div class="nav_list">
+                <a href="/" class="nav_link"> <i class='bx bxs-store nav_icon'></i>  </a>
+                <a href="/cart" class="nav_link"> <i class='bx bx-cart nav_icon'></i>  </a>
+                <a href="/orders" class="nav_link"> <i class='bx bx-package nav_icon' ></i> </a>
+
+                <a href="/admin" th:if="${user != null and user.getRole() == 'ROLE_ADMIN'}">
+                    <i class='bx bx-desktop nav_icon'></i>
+                </a>
+            </div>
+        </div>
+        <a href="/logout" class="nav_link" th:if="${user != null}">
+            <i class='bx bx-log-out nav_icon'></i>
+        </a>
+        <a href="/authentication" class="nav_link" th:unless="${user != null}">
+            <i class='bx bx-log-in nav_icon'></i>
+        </a>
+    </nav>
+</div>
+
+<div class="bg-light">
+    <div class="card">
+        <div class="row">
+            <div class="col-6">
+                <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+                    <div class="carousel-inner">
+                        <div class="carousel-item" th:each="image, index : ${product.images}" th:classappend="${index.index == 0} ? 'active'">
+                            <img class="d-block w-100" th:src="'/img/' + ${image.getPath()}"
+                                 th:alt="${'Slide ' + (index.index + 1)}">
+                        </div>
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="m-4">
+                    <h1 th:text="${product.getTitle()}"></h1>
+                    <h3 th:text="${product.getPrice() + ' руб.'}"></h3>
+                    <p th:text="${product.getDescription()}"></p>
+                    <div>
+                        <b>Продавец: </b><span th:text="${product.getSeller()}"></span>
+                    </div>
+                    <a th:href="@{/cart_add/{id}(id=${product.getId()})}" class="btn btn-primary mt-3">Добавить в корзину</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <a href="/" class="btn btn-secondary mt-3">Назад</a>
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+</body>
+</html>
